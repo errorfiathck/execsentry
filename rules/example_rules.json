@@ -1,0 +1,44 @@
+{
+  "rules": [
+    {
+      "id": "R-HTTP-01",
+      "title": "Response JSON indicates processing/execution",
+      "severity": "high",
+      "description": "Server API returned JSON keys such as 'executed', 'task_id', 'job_id', or 'command' after upload — indicates the uploaded file may be scheduled for execution or processing.",
+      "kind": "http",
+      "pattern": "\"(?:executed|task_id|job_id|command)\"\\s*:"
+    },
+    {
+      "id": "R-HTTP-02",
+      "title": "X-Forwarded-By / Executor header",
+      "severity": "medium",
+      "description": "Custom X- headers that indicate a processing backend (e.g., X-Processor, X-Executor).",
+      "kind": "http",
+      "pattern": "x-(?:processor|executor|job|task)"
+    },
+    {
+      "id": "R-CODE-01",
+      "title": "Use of subprocess or os.system",
+      "severity": "high",
+      "description": "Direct use of subprocess/os.system/exec may execute files without proper validation of inputs or paths.",
+      "kind": "code",
+      "pattern": "\\b(subprocess\\.|os\\.system\\(|Popen\\(|exec\\(|eval\\()"
+    },
+    {
+      "id": "R-CONFIG-01",
+      "title": "Config references plugin/upload directory",
+      "severity": "medium",
+      "description": "Config file contains keys referencing upload/plugin directories; dynamic loading from such directories is risky.",
+      "kind": "config",
+      "pattern": "(?:plugin_dir|plugins|upload_dir|uploads|modules|extensions)\\s*[:=]?\\s*"
+    },
+    {
+      "id": "R-CONFIG-02",
+      "title": "Crontab references writable tmp/upload dirs",
+      "severity": "high",
+      "description": "Crontab runs scripts located in /tmp, /var/tmp, or upload directories which are often writable by untrusted users.",
+      "kind": "config",
+      "pattern": "(?:/tmp/|/var/tmp/|/uploads/)"
+    }
+  ]
+}
